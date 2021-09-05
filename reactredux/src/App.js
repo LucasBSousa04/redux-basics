@@ -1,25 +1,38 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+// Connect and map is the old way to access store
+import { connect } from 'react-redux';
 
-function App() {
+function App({
+  age,
+  onAgeUp,
+  onAgeDown,
+}) {
+  // eslint-disable-next-line no-shadow
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        Age:
+        {age}
+        <span />
+      </div>
+      <button type="button" onClick={onAgeUp}>Age UP</button>
+      <button type="button" onClick={onAgeDown}>Age Down</button>
     </div>
   );
 }
 
-export default App;
+// Mapping the state so we can use it as props.
+const mapStateToProps = (state) => ({
+  age: state.age,
+});
+
+// Maps the action's dispatches. It's "to props"
+// because we'll use them on components'props
+const mapDispatchToProps = (dispatch) => ({
+  onAgeUp: () => dispatch({ type: 'AGE_UP' }),
+  onAgeDown: () => dispatch({ type: 'AGE_DOWN' }),
+});
+
+// Connect gives a high-level component
+export default connect(mapStateToProps, mapDispatchToProps)(App);
